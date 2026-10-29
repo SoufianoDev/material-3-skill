@@ -36,6 +36,10 @@ jobs:
         working-directory: plugins/material-3-mimocode
         run: bun install
 
+      - name: Smoke-test MiMo Code reference tool
+        working-directory: plugins/material-3-mimocode
+        run: bun run ../../tests/mimocode_plugin_runtime_test.ts
+
       - name: Type-check MiMo Code plugin
         working-directory: plugins/material-3-mimocode
         run: bun run typecheck
