@@ -104,6 +104,8 @@ The plugin follows the [official OpenCode V2 plugin architecture](https://dev.op
 
 MiMo Code has its own plugin SDK and native skill discovery system. Its integration uses `@mimo-ai/plugin`, not OpenCode's SDK. See [MiMo Code's skill documentation](https://mimo.xiaomi.com/mimocode/skills) and [custom tool documentation](https://mimo.xiaomi.com/mimocode/custom-tools).
 
+**Runtime limitation:** the external-checkout plugin installation below is supported by MiMo Code's Bun-based CLI/TUI runtime. MiMo Desktop uses a Node runtime that only loads plugins shipped inside its own configuration directory, so the external-checkout install command does not enable this plugin in Desktop. For Desktop, use the native `SKILL.md` installation below; it follows MiMo Code's documented skill discovery paths and does not require the TypeScript plugin.
+
 ## How this skill was built
 
 This skill was created collaboratively between a human and an AI coding agent. The information in the skill files is **distilled from publicly available sources** — it is not original design system documentation, but a curated reference assembled from official docs, library references, and training data.
@@ -189,18 +191,33 @@ git clone https://github.com/SoufianoDev/material-3-skill.git "$HOME/.local/shar
 mimo plugin -g "$HOME/.local/share/material-3-skill/plugins/material-3-mimocode"
 ```
 
-Keep that checkout at the same path after installation. Restart MiMo Code or start a new session after installing the plugin. The tool is server-side and does not add a custom Desktop settings panel.
+Keep that checkout at the same path after installation. Restart MiMo Code or start a new CLI/TUI session after installing the plugin. This external-checkout install is not supported by the MiMo Desktop Node runtime; see the runtime limitation above.
 
 #### Native MiMo Code skill (without the plugin)
 
-MiMo Code natively discovers skills under `.mimocode/skills/`, `~/.config/mimocode/skills/`, and supported project compatibility directories such as `.agents/skills/`. To enable the existing skill globally without installing the TypeScript plugin:
+MiMo Code natively discovers skills under `.mimocode/skills/`, `~/.config/mimocode/skills/`, and supported project compatibility directories such as `.agents/skills/`. This is the recommended option for Desktop and does not require the TypeScript plugin.
+
+If you have not already cloned the repository to the path used above, run this once:
 
 ```bash
-mkdir -p "$HOME/.config/mimocode/skills"
-cp -R "$HOME/.local/share/material-3-skill/skills/material-3" "$HOME/.config/mimocode/skills/material-3"
+git clone https://github.com/SoufianoDev/material-3-skill.git "$HOME/.local/share/material-3-skill"
 ```
 
-For a single project, from its root, copy the folder to `.agents/skills/material-3` instead. Keep the entire folder so the `references/` documents remain available. MiMo Code reads `name` and `description` from the skill's YAML frontmatter; the skill already includes both.
+To enable the skill globally, copy the contents of the skill folder into MiMo Code's global skills directory:
+
+```bash
+mkdir -p "$HOME/.config/mimocode/skills/material-3"
+cp -R "$HOME/.local/share/material-3-skill/skills/material-3/." "$HOME/.config/mimocode/skills/material-3/"
+```
+
+For a single project, run these commands from the project root instead:
+
+```bash
+mkdir -p .agents/skills/material-3
+cp -R "$HOME/.local/share/material-3-skill/skills/material-3/." .agents/skills/material-3/
+```
+
+Keep the entire folder so the `references/` documents remain available. MiMo Code reads `name` and `description` from the skill's YAML frontmatter; the skill already includes both.
 
 ### Claude Code plugin install
 
