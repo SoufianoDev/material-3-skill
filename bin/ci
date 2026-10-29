@@ -31,5 +31,6 @@ if command -v claude >/dev/null 2>&1; then
 fi
 
 bash tests/plugin_layout_test.sh
+bash tests/opencode_plugin_test.sh
 
 printf 'CI checks passed.\n'
