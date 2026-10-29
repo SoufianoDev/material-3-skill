@@ -9,7 +9,8 @@
   },
   "files": [
     "index.ts",
-    "skills"
+    "skills",
+    "LICENSE"
   ],
   "dependencies": {
     "@opencode/plugin": "2.1.2",
