@@ -23,6 +23,7 @@ expect_contains() {
 
 expect_file "plugins/material-3-opencode/index.ts"
 expect_file "plugins/material-3-opencode/package.json"
+expect_file "plugins/material-3-opencode/LICENSE"
 expect_file "plugins/material-3-opencode/skills/material-3/SKILL.md"
 
 if command -v jq >/dev/null 2>&1; then
