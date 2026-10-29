@@ -163,7 +163,7 @@ To verify or remove the plugin:
 
 ```bash
 opencode plugin list
-opencode plugin remove material-3
+opencode plugin remove 'github:SoufianoDev/material-3-skill#master::path:plugins/material-3-opencode'
 ```
 
 The OpenCode plugin is a **server plugin**, not a custom Desktop panel. The skill is exposed to the agent in both interfaces; the package does not add GUI-only controls. See the [OpenCode V2 plugin documentation](https://dev.opencode.ai/v2/docs/build/plugins/) for the server/TUI/GUI distinction.
