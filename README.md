@@ -1,6 +1,6 @@
 # Material Design 3 Skill
 
-**Version 1.1.1 · released 2026-06-29** — Fixes Claude Code installation by shipping a plugin marketplace manifest; documents the working install commands.
+**Skill content v1.1.1 · released 2026-06-29.** This repository also provides client-specific packaging, including a TypeScript plugin for OpenCode V2.
 
 A comprehensive skill for AI coding assistants that can load `SKILL.md` files, covering Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
 
@@ -9,6 +9,11 @@ A comprehensive skill for AI coding assistants that can load `SKILL.md` files, c
 ---
 
 ## What's new
+
+### Unreleased — OpenCode V2 plugin
+
+- Added a TypeScript server plugin using `@opencode/plugin` that registers the bundled `material-3` skill in OpenCode V2.
+- Added an install command for both OpenCode TUI and Desktop, plus a sync script and checks to keep the bundled skill and references identical to the canonical source.
 
 ### 1.1.1 — 2026-06-29
 
@@ -47,6 +52,7 @@ Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/
 - [What's new](#whats-new)
 - [What it does](#what-it-does)
 - [Platform support](#platform-support)
+- [Coding-agent support](#coding-agent-support)
 - [How this skill was built](#how-this-skill-was-built)
   - [Sources](#sources)
   - [Process](#process)
@@ -239,6 +245,10 @@ The audit scores your app across 10 categories (color tokens, typography, shape,
 | `skills/material-3/references/typography-and-shape.md` | Type scale, shape, elevation, motion — including Expressive platform notes |
 | `skills/material-3/references/navigation-patterns.md` | Nav selection, Compose-first patterns, responsive shell |
 | `skills/material-3/references/layout-and-responsive.md` | Breakpoints, canonical layouts, edge-to-edge/insets, foldables |
+| `plugins/material-3-opencode/index.ts` | OpenCode V2 TypeScript server plugin; registers the skill through `@opencode/plugin` |
+| `plugins/material-3-opencode/package.json` | Installable OpenCode V2 plugin package and runtime dependencies |
+| `plugins/material-3-opencode/skills/material-3/` | Bundled copy of the skill and reference files used by the plugin |
+| `scripts/sync-opencode-skill.sh` | Synchronizes the plugin bundle from the canonical skill source |
 | `CONTRIBUTING.md` | How to contribute without drifting the Compose-first story |
 
 ## Contributing
