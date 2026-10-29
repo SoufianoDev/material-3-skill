@@ -31,3 +31,11 @@ jobs:
       - name: Type-check OpenCode plugin
         working-directory: plugins/material-3-opencode
         run: bun run typecheck
+
+      - name: Install MiMo Code plugin dependencies
+        working-directory: plugins/material-3-mimocode
+        run: bun install
+
+      - name: Type-check MiMo Code plugin
+        working-directory: plugins/material-3-mimocode
+        run: bun run typecheck
