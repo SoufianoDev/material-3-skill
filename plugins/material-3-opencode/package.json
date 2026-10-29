@@ -1,0 +1,26 @@
+{
+  "name": "material-3",
+  "version": "1.2.0",
+  "description": "Material Design 3 skill plugin for OpenCode V2 TUI and Desktop.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "files": [
+    "index.ts",
+    "skills",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@opencode/plugin": "2.1.2",
+    "yaml": "^2.8.1"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "^5.9.3"
+  }
+}

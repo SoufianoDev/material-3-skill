@@ -1,6 +1,6 @@
 # Material Design 3 Skill
 
-**Version 1.1.1 · released 2026-06-29** — Fixes Claude Code installation by shipping a plugin marketplace manifest; documents the working install commands.
+**Skill content v1.1.1 · released 2026-06-29.** This repository also provides client-specific packaging, including a TypeScript plugin for OpenCode V2.
 
 A comprehensive skill for AI coding assistants that can load `SKILL.md` files, covering Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
 
@@ -9,6 +9,11 @@ A comprehensive skill for AI coding assistants that can load `SKILL.md` files, c
 ---
 
 ## What's new
+
+### Unreleased — OpenCode V2 plugin
+
+- Added a TypeScript server plugin using `@opencode/plugin` that registers the bundled `material-3` skill in OpenCode V2.
+- Added an install command for both OpenCode TUI and Desktop, plus a sync script and checks to keep the bundled skill and references identical to the canonical source.
 
 ### 1.1.1 — 2026-06-29
 
@@ -47,6 +52,7 @@ Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/
 - [What's new](#whats-new)
 - [What it does](#what-it-does)
 - [Platform support](#platform-support)
+- [Coding-agent support](#coding-agent-support)
 - [How this skill was built](#how-this-skill-was-built)
   - [Sources](#sources)
   - [Process](#process)
@@ -78,6 +84,17 @@ Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/
 | **Jetpack Compose** | **Primary** | Best match for current Material 3 implementation APIs, Expressive motion where available, adaptive navigation |
 | **Flutter** | Secondary | `ThemeData(useMaterial3: true)`, `ColorScheme.fromSeed`, community packages for dynamic color |
 | **Web** | Limited | `@material/web` + CSS custom properties; maintenance mode; no full Expressive parity |
+
+## Coding-agent support
+
+The Material 3 guidance remains a portable `SKILL.md`. For OpenCode V2, this repository also ships a **TypeScript server plugin** using the official `@opencode/plugin` SDK. The plugin registers `material-3` with OpenCode's skill registry, so the same skill is available to the TUI and OpenCode Desktop through their server.
+
+| Agent | Interfaces | Support |
+|-------|------------|---------|
+| **OpenCode V2** | TUI and Desktop GUI | TypeScript server plugin registers the skill for both interfaces |
+| Codex, Claude Code, Cursor, and other skill-aware agents | Depends on the client | Portable `SKILL.md` package and client-specific installation |
+
+The plugin follows the [official OpenCode V2 plugin architecture](https://dev.opencode.ai/v2/docs/build/plugins/) and [server skill API](https://dev.opencode.ai/v2/docs/build/plugins/server). It adds the skill to the agent; it does not add a custom GUI panel.
 
 ## How this skill was built
 
@@ -122,7 +139,34 @@ The skill is a **best-effort distillation** and may drift as Google updates the 
 npx --yes skills add hamen/material-3-skill --skill material-3 -y
 ```
 
-This is the preferred path for Codex, Claude Code, Cursor, and multi-agent setups because the repo follows the direct `skills/<name>/SKILL.md` layout.
+This is the preferred path for Codex, Claude Code, Cursor, and multi-agent setups because the repo follows the direct `skills/<name>/SKILL.md` layout. For OpenCode V2, install the TypeScript plugin described next.
+
+### OpenCode V2 (TUI + Desktop GUI)
+
+This repository includes a real TypeScript plugin at `plugins/material-3-opencode/`. It uses `@opencode/plugin` to register the bundled `material-3` skill with the OpenCode V2 server. That makes it available in both the TUI and OpenCode Desktop without maintaining separate skill installations for each interface.
+
+Install it globally:
+
+```bash
+opencode plugin add 'github:SoufianoDev/material-3-skill#master::path:plugins/material-3-opencode'
+```
+
+The plugin package contains the skill and its reference documents, so it works independently of the repository's source checkout. The Desktop app uses the same globally configured plugin through its background server.
+
+After installation, start a new OpenCode session and invoke the skill explicitly when needed:
+
+```text
+@material-3 Create a responsive settings screen using Material Design 3.
+```
+
+To verify or remove the plugin:
+
+```bash
+opencode plugin list
+opencode plugin remove 'github:SoufianoDev/material-3-skill#master::path:plugins/material-3-opencode'
+```
+
+The OpenCode plugin is a **server plugin**, not a custom Desktop panel. The skill is exposed to the agent in both interfaces; the package does not add GUI-only controls. See the [OpenCode V2 plugin documentation](https://dev.opencode.ai/v2/docs/build/plugins/) for the server/TUI/GUI distinction.
 
 ### Claude Code plugin install
 
@@ -201,6 +245,10 @@ The audit scores your app across 10 categories (color tokens, typography, shape,
 | `skills/material-3/references/typography-and-shape.md` | Type scale, shape, elevation, motion — including Expressive platform notes |
 | `skills/material-3/references/navigation-patterns.md` | Nav selection, Compose-first patterns, responsive shell |
 | `skills/material-3/references/layout-and-responsive.md` | Breakpoints, canonical layouts, edge-to-edge/insets, foldables |
+| `plugins/material-3-opencode/index.ts` | OpenCode V2 TypeScript server plugin; registers the skill through `@opencode/plugin` |
+| `plugins/material-3-opencode/package.json` | Installable OpenCode V2 plugin package and runtime dependencies |
+| `plugins/material-3-opencode/skills/material-3/` | Bundled copy of the skill and reference files used by the plugin |
+| `scripts/sync-opencode-skill.sh` | Synchronizes the plugin bundle from the canonical skill source |
 | `CONTRIBUTING.md` | How to contribute without drifting the Compose-first story |
 
 ## Contributing

@@ -1,6 +1,6 @@
 # Contributing
 
-This repo is a **Claude Code skill**: markdown that guides agents to produce **Material Design 3**–aligned UI. Keep changes **accurate**, **minimal**, and aligned with the **Compose-first** story in [README.md](README.md).
+This repo maintains a portable **Material Design 3 `SKILL.md`** plus client-specific packaging for agent tools. Keep changes **accurate**, **minimal**, and aligned with the **Compose-first** story in [README.md](README.md).
 
 ## Platform hierarchy (do not invert)
 
@@ -9,6 +9,17 @@ This repo is a **Claude Code skill**: markdown that guides agents to produce **M
 3. **Web** (`@material/web`, CSS tokens) — **limited**; [Material Web is in maintenance mode](https://m3.material.io/develop/web) and **M3 Expressive is not on Web**.
 
 New examples or sections should default to **Compose** unless the change is explicitly web- or Flutter-only.
+
+## OpenCode V2 plugin
+
+OpenCode support is an actual TypeScript server plugin, not only a native `SKILL.md` install. Follow the [official V2 plugin docs](https://dev.opencode.ai/v2/docs/build/plugins/) and [server skill API](https://dev.opencode.ai/v2/docs/build/plugins/server).
+
+- Plugin entry: `plugins/material-3-opencode/index.ts`
+- Package metadata: `plugins/material-3-opencode/package.json`
+- Canonical skill source: `skills/material-3/`
+- Bundled copy used by the installable plugin: `plugins/material-3-opencode/skills/material-3/`
+
+When editing `SKILL.md` or its references, run `bash scripts/sync-opencode-skill.sh` to update the bundled copy. The CI checks compare both trees and fail on drift. Keep the plugin as a server part unless a real Desktop-only control is needed; a custom GUI part is a separate, experimental API and is not needed to register this agent skill.
 
 ## M3 Expressive
 
