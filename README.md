@@ -133,7 +133,7 @@ The skill is a **best-effort distillation** and may drift as Google updates the 
 npx --yes skills add hamen/material-3-skill --skill material-3 -y
 ```
 
-This is the preferred path for Codex, Claude Code, Cursor, OpenCode V2, and multi-agent setups because the repo follows the direct `skills/<name>/SKILL.md` layout.
+This is the preferred path for Codex, Claude Code, Cursor, and multi-agent setups because the repo follows the direct `skills/<name>/SKILL.md` layout. For OpenCode V2-specific TUI and Desktop GUI setup, see the next section.
 
 ### OpenCode V2 (TUI + Desktop GUI)
 
