@@ -40,6 +40,10 @@ expect_contains "plugins/material-3-mimocode/index.ts" 'id: "material-3-mimocode
 expect_contains "plugins/material-3-mimocode/index.ts" 'material_3_reference: tool({'
 expect_contains "README.md" 'mimo plugin -g'
 expect_contains "README.md" 'material-3-mimocode'
+expect_contains "README.md" 'MiMo Code uses a Node runtime'
+expect_contains "README.md" 'git clone https://github.com/SoufianoDev/material-3-skill.git'
+expect_contains "README.md" 'skills/material-3/.'
+
 
 while IFS= read -r source; do
   target="plugins/material-3-mimocode/$source"
