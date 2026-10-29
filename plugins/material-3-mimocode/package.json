@@ -1,0 +1,24 @@
+{
+  "name": "material-3-mimocode",
+  "version": "1.0.0",
+  "description": "Material Design 3 reference tool for Xiaomi MiMo Code.",
+  "type": "module",
+  "main": "./index.ts",
+  "exports": {
+    "./server": "./index.ts"
+  },
+  "files": [
+    "index.ts",
+    "skills",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@mimo-ai/plugin": "0.1.16",
+    "@types/node": "^22.15.3",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

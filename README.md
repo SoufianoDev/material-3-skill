@@ -1,6 +1,6 @@
 # Material Design 3 Skill
 
-**Skill content v1.1.1 · released 2026-06-29.** This repository also provides client-specific packaging, including a TypeScript plugin for OpenCode V2.
+**Skill content v1.1.1 · released 2026-06-29.** This repository also provides client-specific packages for OpenCode V2 and Xiaomi MiMo Code.
 
 A comprehensive skill for AI coding assistants that can load `SKILL.md` files, covering Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
 
@@ -14,6 +14,11 @@ A comprehensive skill for AI coding assistants that can load `SKILL.md` files, c
 
 - Added a TypeScript server plugin using `@opencode/plugin` that registers the bundled `material-3` skill in OpenCode V2.
 - Added an install command for both OpenCode TUI and Desktop, plus a sync script and checks to keep the bundled skill and references identical to the canonical source.
+
+### Unreleased — MiMo Code plugin
+
+- Added a MiMo Code server plugin using the host-provided `@mimo-ai/plugin` SDK and an on-demand Material 3 reference tool.
+- Documented both plugin installation and MiMo Code's native Agent Skills installation path.
 
 ### 1.1.1 — 2026-06-29
 
@@ -92,9 +97,14 @@ The Material 3 guidance remains a portable `SKILL.md`. For OpenCode V2, this rep
 | Agent | Interfaces | Support |
 |-------|------------|---------|
 | **OpenCode V2** | TUI and Desktop GUI | TypeScript server plugin registers the skill for both interfaces |
+| **Xiaomi MiMo Code** | CLI/TUI sessions using the configured server | Native `SKILL.md` discovery plus an optional TypeScript server plugin with an on-demand reference tool |
 | Codex, Claude Code, Cursor, and other skill-aware agents | Depends on the client | Portable `SKILL.md` package and client-specific installation |
 
 The plugin follows the [official OpenCode V2 plugin architecture](https://dev.opencode.ai/v2/docs/build/plugins/) and [server skill API](https://dev.opencode.ai/v2/docs/build/plugins/server). It adds the skill to the agent; it does not add a custom GUI panel.
+
+MiMo Code has its own plugin SDK and native skill discovery system. Its integration uses `@mimo-ai/plugin`, not OpenCode's SDK. See [MiMo Code's skill documentation](https://mimo.xiaomi.com/mimocode/skills) and [custom tool documentation](https://mimo.xiaomi.com/mimocode/custom-tools).
+
+**Runtime limitation:** the external-checkout plugin installation below is supported by MiMo Code's Bun-based CLI/TUI runtime. MiMo Desktop uses a Node runtime that only loads plugins shipped inside its own configuration directory, so the external-checkout install command does not enable this plugin in Desktop. For Desktop, use the native `SKILL.md` installation below; it follows MiMo Code's documented skill discovery paths and does not require the TypeScript plugin.
 
 ## How this skill was built
 
@@ -167,6 +177,47 @@ opencode plugin remove 'github:SoufianoDev/material-3-skill#master::path:plugins
 ```
 
 The OpenCode plugin is a **server plugin**, not a custom Desktop panel. The skill is exposed to the agent in both interfaces; the package does not add GUI-only controls. See the [OpenCode V2 plugin documentation](https://dev.opencode.ai/v2/docs/build/plugins/) for the server/TUI/GUI distinction.
+
+### Xiaomi MiMo Code
+
+The repository includes a real TypeScript server plugin in `plugins/material-3-mimocode/`. It uses MiMo Code's `@mimo-ai/plugin` SDK and exposes an on-demand `material_3_reference` tool, allowing the agent to load the main MD3 skill or a focused reference (colors, components, layout, navigation, theming, or typography) without injecting every document into every prompt.
+
+#### Install the TypeScript plugin
+
+The plugin is not published to npm yet, so install it from a stable local checkout:
+
+```bash
+git clone https://github.com/SoufianoDev/material-3-skill.git "$HOME/.local/share/material-3-skill"
+mimo plugin -g "$HOME/.local/share/material-3-skill/plugins/material-3-mimocode"
+```
+
+Keep that checkout at the same path after installation. Restart MiMo Code or start a new CLI/TUI session after installing the plugin. This external-checkout install is not supported by the MiMo Desktop Node runtime; see the runtime limitation above.
+
+#### Native MiMo Code skill (without the plugin)
+
+MiMo Code natively discovers skills under `.mimocode/skills/`, `~/.config/mimocode/skills/`, and supported project compatibility directories such as `.agents/skills/`. This is the recommended option for Desktop and does not require the TypeScript plugin.
+
+If you have not already cloned the repository to the path used above, run this once:
+
+```bash
+git clone https://github.com/SoufianoDev/material-3-skill.git "$HOME/.local/share/material-3-skill"
+```
+
+To enable the skill globally, copy the contents of the skill folder into MiMo Code's global skills directory:
+
+```bash
+mkdir -p "$HOME/.config/mimocode/skills/material-3"
+cp -R "$HOME/.local/share/material-3-skill/skills/material-3/." "$HOME/.config/mimocode/skills/material-3/"
+```
+
+For a single project, run these commands from the project root instead:
+
+```bash
+mkdir -p .agents/skills/material-3
+cp -R "$HOME/.local/share/material-3-skill/skills/material-3/." .agents/skills/material-3/
+```
+
+Keep the entire folder so the `references/` documents remain available. MiMo Code reads `name` and `description` from the skill's YAML frontmatter; the skill already includes both.
 
 ### Claude Code plugin install
 
@@ -249,6 +300,10 @@ The audit scores your app across 10 categories (color tokens, typography, shape,
 | `plugins/material-3-opencode/package.json` | Installable OpenCode V2 plugin package and runtime dependencies |
 | `plugins/material-3-opencode/skills/material-3/` | Bundled copy of the skill and reference files used by the plugin |
 | `scripts/sync-opencode-skill.sh` | Synchronizes the plugin bundle from the canonical skill source |
+| `plugins/material-3-mimocode/index.ts` | MiMo Code TypeScript server plugin; registers the on-demand `material_3_reference` tool |
+| `plugins/material-3-mimocode/package.json` | MiMo Code plugin package metadata and typecheck configuration |
+| `plugins/material-3-mimocode/skills/material-3/` | Bundled skill and reference files used by the MiMo Code plugin |
+| `scripts/sync-mimocode-skill.sh` | Synchronizes the MiMo Code bundle from the canonical skill source |
 | `CONTRIBUTING.md` | How to contribute without drifting the Compose-first story |
 
 ## Contributing

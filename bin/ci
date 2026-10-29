@@ -32,5 +32,6 @@ fi
 
 bash tests/plugin_layout_test.sh
 bash tests/opencode_plugin_test.sh
+bash tests/mimocode_plugin_test.sh
 
 printf 'CI checks passed.\n'
