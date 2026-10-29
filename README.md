@@ -81,14 +81,14 @@ Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/
 
 ## Coding-agent support
 
-This is a portable `SKILL.md` skill, not a client-specific plugin. OpenCode V2 supports it in both the **TUI** and the **Desktop GUI** through its native Agent Skills system; both interfaces can use the same installed skill.
+The Material 3 guidance remains a portable `SKILL.md`. For OpenCode V2, this repository also ships a **TypeScript server plugin** using the official `@opencode/plugin` SDK. The plugin registers `material-3` with OpenCode's skill registry, so the same skill is available to the TUI and OpenCode Desktop through their server.
 
 | Agent | Interfaces | Support |
 |-------|------------|---------|
-| **OpenCode V2** | TUI and Desktop GUI | Native `SKILL.md` discovery and on-demand loading |
-| Codex, Claude Code, Cursor, and other skill-aware agents | Depends on the client | Use the portable skill layout and the installation method documented below |
+| **OpenCode V2** | TUI and Desktop GUI | TypeScript server plugin registers the skill for both interfaces |
+| Codex, Claude Code, Cursor, and other skill-aware agents | Depends on the client | Portable `SKILL.md` package and client-specific installation |
 
-OpenCode V2's official discovery paths and loading behavior are documented in the [Agent Skills guide](https://opencode.ai/v2/docs/skills/).
+The plugin follows the [official OpenCode V2 plugin architecture](https://dev.opencode.ai/v2/docs/build/plugins/) and [server skill API](https://dev.opencode.ai/v2/docs/build/plugins/server). It adds the skill to the agent; it does not add a custom GUI panel.
 
 ## How this skill was built
 
@@ -133,37 +133,34 @@ The skill is a **best-effort distillation** and may drift as Google updates the 
 npx --yes skills add hamen/material-3-skill --skill material-3 -y
 ```
 
-This is the preferred path for Codex, Claude Code, Cursor, and multi-agent setups because the repo follows the direct `skills/<name>/SKILL.md` layout. For OpenCode V2-specific TUI and Desktop GUI setup, see the next section.
+This is the preferred path for Codex, Claude Code, Cursor, and multi-agent setups because the repo follows the direct `skills/<name>/SKILL.md` layout. For OpenCode V2, install the TypeScript plugin described next.
 
 ### OpenCode V2 (TUI + Desktop GUI)
 
-OpenCode V2 loads Agent Skills through `SKILL.md`. Install the skill once; you do **not** need a separate TUI plugin, GUI plugin, or duplicate skill copy for the two interfaces.
+This repository includes a real TypeScript plugin at `plugins/material-3-opencode/`. It uses `@opencode/plugin` to register the bundled `material-3` skill with the OpenCode V2 server. That makes it available in both the TUI and OpenCode Desktop without maintaining separate skill installations for each interface.
 
-**Project-scoped install** — run from the project where you want to use Material 3:
-
-```bash
-npx --yes skills add SoufianoDev/material-3-skill --skill material-3 --agent opencode -y
-```
-
-**Global install** — make it available across projects:
+Install it globally:
 
 ```bash
-npx --yes skills add SoufianoDev/material-3-skill --skill material-3 --agent opencode -g -y
+opencode plugin add 'github:SoufianoDev/material-3-skill#master::path:plugins/material-3-opencode'
 ```
 
-OpenCode V2 also supports these native locations when installing manually:
+The plugin package contains the skill and its reference documents, so it works independently of the repository's source checkout. The Desktop app uses the same globally configured plugin through its background server.
 
-- Project-local: `.opencode/skills/material-3/SKILL.md`
-- Project-local, shared with other agents: `.agents/skills/material-3/SKILL.md`
-- Global: `~/.config/opencode/skills/material-3/SKILL.md`
-
-Start a new OpenCode session after installation. In either the TUI or Desktop GUI, invoke the skill explicitly with a prompt such as:
+After installation, start a new OpenCode session and invoke the skill explicitly when needed:
 
 ```text
 @material-3 Create a responsive settings screen using Material Design 3.
 ```
 
-OpenCode can also discover the skill from its description when relevant. If it is missing, verify the exact `material-3/SKILL.md` path and check that your OpenCode V2 `permissions` configuration does not deny the `skill` action.
+To verify or remove the plugin:
+
+```bash
+opencode plugin list
+opencode plugin remove material-3
+```
+
+The OpenCode plugin is a **server plugin**, not a custom Desktop panel. The skill is exposed to the agent in both interfaces; the package does not add GUI-only controls. See the [OpenCode V2 plugin documentation](https://dev.opencode.ai/v2/docs/build/plugins/) for the server/TUI/GUI distinction.
 
 ### Claude Code plugin install
 
