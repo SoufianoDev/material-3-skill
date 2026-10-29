@@ -53,6 +53,12 @@ expect_absent "references"
 expect_contains "README.md" "/plugin marketplace add hamen/material-3-skill"
 expect_contains "README.md" "/plugin install material-3@material-3-skill"
 expect_contains "README.md" "skills/material-3/SKILL.md"
+expect_contains "README.md" "OpenCode V2 (TUI + Desktop GUI)"
+expect_contains "README.md" "--agent opencode"
+expect_contains "README.md" ".opencode/skills/material-3/SKILL.md"
+expect_contains "README.md" ".agents/skills/material-3/SKILL.md"
+expect_contains "README.md" "@material-3"
+expect_contains "CONTRIBUTING.md" "OpenCode V2 compatibility"
 
 if [[ "$failures" -gt 0 ]]; then
   printf '\n%d plugin layout check(s) failed.\n' "$failures"
