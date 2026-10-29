@@ -30,7 +30,13 @@ MiMo Code is an OpenCode-derived host but uses its own SDK. Its plugin must impo
 - Canonical content: `skills/material-3/`
 - Bundled plugin content: `plugins/material-3-mimocode/skills/material-3/`
 
-When editing the canonical skill or references, run `bash scripts/sync-mimocode-skill.sh`. CI compares the plugin bundle with the canonical files and fails on drift. The current plugin exposes a read-only `material_3_reference` tool; it does not claim to register a native MiMo Skill or add a Desktop UI panel. Native skill installation remains available through MiMo Code's documented skill directories.
+When editing the canonical skill or references, run `bash scripts/sync-mimocode-skill.sh`. CI compares the plugin bundle with the canonical files and fails on drift. The current plugin exposes a read-only `material_3_reference` tool; it does not register a native MiMo Skill or add a Desktop UI panel.
+
+Keep the two integration paths distinct in all user-facing docs:
+
+- The external-checkout TypeScript plugin is supported by MiMo Code's Bun-based CLI/TUI runtime. The Desktop Node runtime only loads plugins shipped inside its own configuration directory, so do not present the external-checkout install command as Desktop support.
+- The portable native `SKILL.md` works through MiMo Code's documented skill discovery paths and is the documented Desktop option. Its frontmatter and the full `references/` directory must be preserved.
+- The README must include the repository-clone prerequisite for the native install and copy the contents of the skill directory into the destination (not copy the directory into an already-existing `material-3` folder). Keep install commands consistent with [MiMo Code's official skills documentation](https://mimo.xiaomi.com/mimocode/skills).
 
 ## M3 Expressive
 
