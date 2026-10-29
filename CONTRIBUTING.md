@@ -1,6 +1,6 @@
 # Contributing
 
-This repo is a **Claude Code skill**: markdown that guides agents to produce **Material Design 3**–aligned UI. Keep changes **accurate**, **minimal**, and aligned with the **Compose-first** story in [README.md](README.md).
+This repo maintains a portable **Material Design 3 `SKILL.md`** plus client-specific packaging for agent tools. Keep changes **accurate**, **minimal**, and aligned with the **Compose-first** story in [README.md](README.md).
 
 ## Platform hierarchy (do not invert)
 
