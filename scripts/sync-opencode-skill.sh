@@ -7,6 +7,7 @@ TARGET="$ROOT/plugins/material-3-opencode/skills/material-3"
 
 mkdir -p "$TARGET/references"
 cp "$SOURCE/SKILL.md" "$TARGET/SKILL.md"
+rm -f "$TARGET"/references/*.md
 cp "$SOURCE"/references/*.md "$TARGET/references/"
 
 printf 'Synced canonical Material 3 skill into the OpenCode plugin package.\n'
