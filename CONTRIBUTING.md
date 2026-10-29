@@ -21,6 +21,17 @@ OpenCode support is an actual TypeScript server plugin, not only a native `SKILL
 
 When editing `SKILL.md` or its references, run `bash scripts/sync-opencode-skill.sh` to update the bundled copy. The CI checks compare both trees and fail on drift. Keep the plugin as a server part unless a real Desktop-only control is needed; a custom GUI part is a separate, experimental API and is not needed to register this agent skill.
 
+## Xiaomi MiMo Code plugin
+
+MiMo Code is an OpenCode-derived host but uses its own SDK. Its plugin must import from `@mimo-ai/plugin`; do not reuse `@opencode/plugin` for this integration. Follow the [official MiMo Code skills documentation](https://mimo.xiaomi.com/mimocode/skills), [custom tool guide](https://mimo.xiaomi.com/mimocode/custom-tools), and the host SDK contract in [XiaomiMiMo/MiMo-Code](https://github.com/XiaomiMiMo/MiMo-Code/tree/main/packages/plugin).
+
+- Plugin entry: `plugins/material-3-mimocode/index.ts`
+- Package metadata: `plugins/material-3-mimocode/package.json`
+- Canonical content: `skills/material-3/`
+- Bundled plugin content: `plugins/material-3-mimocode/skills/material-3/`
+
+When editing the canonical skill or references, run `bash scripts/sync-mimocode-skill.sh`. CI compares the plugin bundle with the canonical files and fails on drift. The current plugin exposes a read-only `material_3_reference` tool; it does not claim to register a native MiMo Skill or add a Desktop UI panel. Native skill installation remains available through MiMo Code's documented skill directories.
+
 ## M3 Expressive
 
 Do **not** claim a feature is “available everywhere.” Use the **platform matrix** pattern in [SKILL.md](SKILL.md) (and mirror nuance in [references/typography-and-shape.md](references/typography-and-shape.md)): Compose vs Flutter vs Web, with opt-in / BOM caveats where APIs move quickly.
