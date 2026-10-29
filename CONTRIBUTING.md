@@ -10,17 +10,16 @@ This repo is a **Claude Code skill**: markdown that guides agents to produce **M
 
 New examples or sections should default to **Compose** unless the change is explicitly web- or Flutter-only.
 
-## OpenCode V2 compatibility
+## OpenCode V2 plugin
 
-Keep this skill portable as a standard `SKILL.md`. OpenCode V2 supports the skill in both its TUI and Desktop GUI using the same Agent Skills discovery system, so do not add a separate GUI/TUI plugin solely to expose this guidance.
+OpenCode support is an actual TypeScript server plugin, not only a native `SKILL.md` install. Follow the [official V2 plugin docs](https://dev.opencode.ai/v2/docs/build/plugins/) and [server skill API](https://dev.opencode.ai/v2/docs/build/plugins/server).
 
-When documenting installation, keep the supported paths accurate:
+- Plugin entry: `plugins/material-3-opencode/index.ts`
+- Package metadata: `plugins/material-3-opencode/package.json`
+- Canonical skill source: `skills/material-3/`
+- Bundled copy used by the installable plugin: `plugins/material-3-opencode/skills/material-3/`
 
-- Project-native: `.opencode/skills/<name>/SKILL.md`
-- Shared project skills: `.agents/skills/<name>/SKILL.md`
-- Global OpenCode skills: `~/.config/opencode/skills/<name>/SKILL.md`
-
-Use OpenCode's [official V2 Agent Skills documentation](https://opencode.ai/v2/docs/skills/) as the source of truth for discovery, invocation, and permissions. The path-derived skill ID is `material-3`; document explicit invocation as `@material-3`, not as a slash command.
+When editing `SKILL.md` or its references, run `bash scripts/sync-opencode-skill.sh` to update the bundled copy. The CI checks compare both trees and fail on drift. Keep the plugin as a server part unless a real Desktop-only control is needed; a custom GUI part is a separate, experimental API and is not needed to register this agent skill.
 
 ## M3 Expressive
 
