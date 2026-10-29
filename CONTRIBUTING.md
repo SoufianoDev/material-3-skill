@@ -10,6 +10,18 @@ This repo is a **Claude Code skill**: markdown that guides agents to produce **M
 
 New examples or sections should default to **Compose** unless the change is explicitly web- or Flutter-only.
 
+## OpenCode V2 compatibility
+
+Keep this skill portable as a standard `SKILL.md`. OpenCode V2 supports the skill in both its TUI and Desktop GUI using the same Agent Skills discovery system, so do not add a separate GUI/TUI plugin solely to expose this guidance.
+
+When documenting installation, keep the supported paths accurate:
+
+- Project-native: `.opencode/skills/<name>/SKILL.md`
+- Shared project skills: `.agents/skills/<name>/SKILL.md`
+- Global OpenCode skills: `~/.config/opencode/skills/<name>/SKILL.md`
+
+Use OpenCode's [official V2 Agent Skills documentation](https://opencode.ai/v2/docs/skills/) as the source of truth for discovery, invocation, and permissions. The path-derived skill ID is `material-3`; document explicit invocation as `@material-3`, not as a slash command.
+
 ## M3 Expressive
 
 Do **not** claim a feature is “available everywhere.” Use the **platform matrix** pattern in [SKILL.md](SKILL.md) (and mirror nuance in [references/typography-and-shape.md](references/typography-and-shape.md)): Compose vs Flutter vs Web, with opt-in / BOM caveats where APIs move quickly.
